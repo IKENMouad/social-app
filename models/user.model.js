@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
       minLength: 3,
       maxLength: 55,
       unique: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
@@ -24,25 +24,25 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       max: 1024,
-      minlength: 6
+      minlength: 6,
     },
     picture: {
       type: String,
-      default: "./uploads/profil/random-user.png"
+      default: "./uploads/profil/random-user.png",
     },
-    bio :{
+    bio: {
       type: String,
       max: 1024,
     },
     followers: {
-      type: [String]
+      type: [String],
     },
     following: {
-      type: [String]
+      type: [String],
     },
     likes: {
-      type: [String]
-    }
+      type: [String],
+    },
   },
   {
     timestamps: true,

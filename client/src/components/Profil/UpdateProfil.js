@@ -6,10 +6,9 @@ import { updateBio } from "../../actions/user.actions";
 import { dateParser } from "../Utils";
 import FollowHandler from "./FollowHandler";
 
-const UpdateProfil = () => {
+const UpdateProfil = ({currentUser:userData}) => {
   const [bio, setBio] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
-  const userData = useSelector((state) => state.userReducer);
   const usersData = useSelector((state) => state.usersReducer);
   const error = useSelector((state) => state.errorReducer.userError);
   const dispatch = useDispatch();

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isEmpty, timestampParser } from "../Utils";
 import { NavLink } from "react-router-dom";
 import { addPost, getPosts } from "../../actions/post.actions";
+import { authenticationService } from "../../services/auth.service";
 
 const NewPostForm = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,10 +11,10 @@ const NewPostForm = () => {
   const [postPicture, setPostPicture] = useState(null);
   const [video, setVideo] = useState("");
   const [file, setFile] = useState();
-  const userData = useSelector((state) => state.userReducer);
+  const [userData, setUserData] = useState('');
   const error = useSelector((state) => state.errorReducer.postError);
   const dispatch = useDispatch();
-  
+
   const handlePost = async () => {
     if (message || postPicture || video) {
       const data = new FormData();
@@ -29,12 +30,12 @@ const NewPostForm = () => {
       alert("Veuillez entrer un message")
     }
   };
- 
+
   const handlePicture = (e) => {
     setPostPicture(URL.createObjectURL(e.target.files[0]));
     setFile(e.target.files[0]);
     setVideo('');
-  }; 
+  };
 
   const cancelPost = () => {
     setMessage("");
@@ -45,7 +46,12 @@ const NewPostForm = () => {
 
 
   useEffect(() => {
-    if (!isEmpty(userData)) setIsLoading(false);
+    authenticationService.currentUser.subscribe(user => {
+      if (user) {
+        setUserData(user);
+        setIsLoading(false);
+      }
+    })
 
     const handleVideo = () => {
       let findLink = message.split(" ");
@@ -73,19 +79,19 @@ const NewPostForm = () => {
         <>
           <div className="data">
             <p>
-              <span>{userData.following ? userData.following.length : 0}</span>{" "}
+              <span>{userData.following ? userData.following.length : 0}</span>
               Abonnement
               {userData.following && userData.following.length > 1 ? "s" : null}
             </p>
             <p>
-              <span>{userData.followers ? userData.followers.length : 0}</span>{" "}
+              <span>{userData.followers ? userData.followers.length : 0}</span>
               Abonné
               {userData.followers && userData.followers.length > 1 ? "s" : null}
             </p>
           </div>
           <NavLink exact to="/profil">
             <div className="user-info">
-              <img src={userData.picture} alt="user-img" />
+              <img src={`http://localhost:3000/public/assets/uploads/profil/random-user.png` } alt="user-img" />
             </div>
           </NavLink>
           <div className="post-form">

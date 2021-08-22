@@ -8,21 +8,19 @@ import { getUser } from "./actions/user.actions";
 const App = () => {
   const [uid, setUid] = useState(null);
   const dispatch = useDispatch();
-
+  
+  
   useEffect(() => {
     const fetchToken = async () => {
-      await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_API_URL}jwtid`,
-        withCredentials: true,
-      })
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}jwtid`)
         .then((res) => {
+          console.log("res JWTID", res);
           setUid(res.data);
         })
         .catch((err) => console.log("No token"));
     };
     fetchToken();
-
     if (uid) dispatch(getUser(uid));
   }, [uid, dispatch]);
 

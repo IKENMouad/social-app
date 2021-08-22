@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import cookie from "js-cookie";
+import { authenticationService } from "../../services/auth.service";
 
 const Logout = () => {
   const removeCookie = (key) => {
@@ -10,15 +11,13 @@ const Logout = () => {
   };
 
   const logout = async () => {
-    await axios({
-      method: "get",
-      url: `${process.env.REACT_APP_API_URL}api/user/logout`,
-      withCredentials: true,
-    })
-      .then(() => removeCookie("jwt"))
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}api/user/logout`)
+      .then(() => {
+        authenticationService.logout();
+        removeCookie("jwt");
+      })
       .catch((err) => console.log(err));
-    
-    window.location = "/";
   };
 
   return (
