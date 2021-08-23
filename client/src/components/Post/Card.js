@@ -6,6 +6,7 @@ import LikeButton from "./LikeButton";
 import { updatePost } from "../../actions/post.actions";
 import DeleteCard from "./DeleteCard";
 import CardComments from "./CardComments";
+import { authenticationService } from "../../services/auth.service";
 
 const Card = ({ post }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,10 +14,9 @@ const Card = ({ post }) => {
   const [textUpdate, setTextUpdate] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const usersData = useSelector((state) => state.usersReducer);
-  const userData = useSelector((state) => state.userReducer);
+  const [userData, setUserData] = useState('');
   const dispatch = useDispatch();
-
-  const updateItem = () => {
+   const updateItem = () => {
     if (textUpdate) {
       dispatch(updatePost(post._id, textUpdate));
     }
@@ -24,6 +24,9 @@ const Card = ({ post }) => {
   };
 
   useEffect(() => {
+    authenticationService.currentUser.subscribe(user => {
+      setUserData(user)
+    })
     !isEmpty(usersData[0]) && setIsLoading(false);
   }, [usersData]);
 
@@ -59,7 +62,7 @@ const Card = ({ post }) => {
                       })
                       .join("")}
                 </h3>
-                {post.posterId !== userData._id && (
+                {post.posterId !== userData.id && (
                   <FollowHandler idToFollow={post.posterId} type={"card"} />
                 )}
               </div>
@@ -93,7 +96,7 @@ const Card = ({ post }) => {
                 title={post._id}
               ></iframe>
             )}
-            {userData._id === post.posterId && (
+            {userData.id === post.posterId && (
               <div className="button-container">
                 <div onClick={() => setIsUpdated(!isUpdated)}>
                   <img src="./img/icons/edit.svg" alt="edit" />

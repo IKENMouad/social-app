@@ -11,7 +11,8 @@ const Thread = () => {
   const posts = useSelector((state) => state.postReducer);
 
   const loadMore = () => {
-    if (window.innerHeight + document.documentElement.scrollTop + 1 > document.scrollingElement.scrollHeight) {
+    if (window.innerHeight + document.documentElement.scrollTop + 1 >
+      document.scrollingElement.scrollHeight) {
       setLoadPost(true);
     }
   }

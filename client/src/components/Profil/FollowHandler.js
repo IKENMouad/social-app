@@ -9,12 +9,12 @@ const FollowHandler = ({ idToFollow, type }) => {
   const dispatch = useDispatch();
 
   const handleFollow = () => {
-    dispatch(followUser(userData._id, idToFollow));
+    dispatch(followUser(userData.id, idToFollow));
     setIsFollowed(true);
   };
 
   const handleUnfollow = () => {
-    dispatch(unfollowUser(userData._id, idToFollow));
+    dispatch(unfollowUser(userData.id, idToFollow));
     setIsFollowed(false);
   };
 

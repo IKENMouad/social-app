@@ -16,12 +16,13 @@ const NewPostForm = () => {
   const dispatch = useDispatch();
 
   const handlePost = async () => {
+    console.log('userData::', userData)
     if (message || postPicture || video) {
       const data = new FormData();
-      data.append('posterId', userData._id);
+      data.append('posterId', userData.id);
       data.append('message', message);
       if (file) data.append("file", file);
-      data.append('video', video);
+      if (video) data.append('video', video);
 
       await dispatch(addPost(data));
       dispatch(getPosts());
@@ -35,6 +36,7 @@ const NewPostForm = () => {
     setPostPicture(URL.createObjectURL(e.target.files[0]));
     setFile(e.target.files[0]);
     setVideo('');
+    console.log('e.target.files[0]', e.target.files[0])
   };
 
   const cancelPost = () => {
@@ -91,7 +93,7 @@ const NewPostForm = () => {
           </div>
           <NavLink exact to="/profil">
             <div className="user-info">
-              <img src={`http://localhost:3000/public/assets/uploads/profil/random-user.png` } alt="user-img" />
+              <img src={`http://localhost:3000/public/assets/uploads/profil/random-user.png`} alt="user-img" />
             </div>
           </NavLink>
           <div className="post-form">

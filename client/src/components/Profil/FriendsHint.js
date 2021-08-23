@@ -14,7 +14,7 @@ const FriendsHint = () => {
     const notFriendList = () => {
       let array = [];
       usersData.map((user) => {
-        if (user._id !== userData._id && !user.followers.includes(userData._id))
+        if (user._id !== userData.id && !user.followers.includes(userData.id))
           return array.push(user._id);
       });
       array.sort(() => 0.5 - Math.random());
@@ -32,7 +32,7 @@ const FriendsHint = () => {
       setFriendsHint(array);
     };
 
-    if (playOnce && !isEmpty(usersData[0]) && !isEmpty(userData._id)) {
+    if (playOnce && !isEmpty(usersData[0]) && !isEmpty(userData.id)) {
       notFriendList();
       setIsLoading(false);
       setPlayOnce(false);
