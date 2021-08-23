@@ -15,7 +15,7 @@ const CardComments = ({ post }) => {
     e.preventDefault();
 
     if (text) {
-      dispatch(addComment(post._id, userData._id, text, userData.pseudo))
+      dispatch(addComment(post._id, userData.id, text, userData.pseudo))
         .then(() => dispatch(getPosts()))
         .then(() => setText(''));
     }
@@ -27,7 +27,7 @@ const CardComments = ({ post }) => {
         return (
           <div
             className={
-              comment.commenterId === userData._id
+              comment.commenterId === userData.id
                 ? "comment-container client"
                 : "comment-container"
             }
@@ -51,7 +51,7 @@ const CardComments = ({ post }) => {
               <div className="comment-header">
                 <div className="pseudo">
                   <h3>{comment.commenterPseudo}</h3>
-                  {comment.commenterId !== userData._id && (
+                  {comment.commenterId !== userData.id && (
                     <FollowHandler
                       idToFollow={comment.commenterId}
                       type={"card"}
@@ -66,7 +66,7 @@ const CardComments = ({ post }) => {
           </div>
         );
       })}
-      {userData._id && (
+      {userData.id && (
         <form action="" onSubmit={handleComment} className="comment-form">
           <input
             type="text"

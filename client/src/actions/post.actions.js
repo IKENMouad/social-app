@@ -36,9 +36,14 @@ export const getPosts = (num) => {
 
 export const addPost = (data) => {
   return (dispatch) => {
-    return axios
-      .post(`${process.env.REACT_APP_API_URL}api/post/`, data)
+    return axios({
+      method: "POST",
+      url: `${process.env.REACT_APP_API_URL}api/post/`,
+      headers: { "Content-Type": "multipart/form-data" },
+      data: data,
+    })
       .then((res) => {
+        console.log('addPost', res)
         if (res.data.errors) {
           dispatch({ type: GET_POST_ERRORS, payload: res.data.errors });
         } else {
