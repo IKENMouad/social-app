@@ -17,22 +17,23 @@ module.exports.readPost = (req, res) => {
 module.exports.createPost = async (req, res) => {
   let fileName;
 
+  console.log("req",  req.file||'req.file');
   if (req.file !== null) {
     try {
       if (
         req.file.detectedMimeType != "image/jpg" &&
         req.file.detectedMimeType != "image/png" &&
         req.file.detectedMimeType != "image/jpeg"
-      )
+        )
         throw Error("invalid file");
-
-      if (req.file.size > 500000) throw Error("max size");
-    } catch (err) {
-      const errors = uploadErrors(err);
-      return res.status(201).json({ errors });
-    }
-    fileName = req.body.posterId + Date.now() + ".jpg";
-
+        if (req.file.size > 500000) throw Error("max size");
+      } catch (err) {
+        const errors = uploadErrors(err);
+        return res.status(201).json({ errors });
+      }
+      fileName = req.body.posterId + Date.now() + ".jpg";
+      console.log("fileName", fileName || "fileName");
+      
     await pipeline(
       req.file.stream,
       fs.createWriteStream(

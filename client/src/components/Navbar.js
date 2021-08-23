@@ -1,19 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { authenticationService } from "../services/auth.service";
-import { UidContext } from "./AppContext";
 import Logout from "./Log/Logout";
 
 const Navbar = () => {
-  const uid = useContext(UidContext);
-  const userData = useSelector((state) => state.userReducer);
-  const [currentUser, setCurrentUser] = useState('')
- 
+  const [currentUser, setCurrentUser] = useState("");
+
   useEffect(() => {
     authenticationService.currentUser.subscribe((user) => setCurrentUser(user));
   }, [authenticationService.currentUser]);
-
 
   return (
     <nav>
