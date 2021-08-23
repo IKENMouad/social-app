@@ -9,7 +9,8 @@ const multerStorage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ext = file.mimetype.split("/")[1];
         const fileName = req.body.posterId + Date.now() + '.' + ext
-        cb(null, `/uploads/posts/${fileName}`);
+        console.log("fileName", fileName);
+        cb(null, `./uploads/posts/${fileName}`);
     },
 });
 const multerFilter = (req, file, cb) => {

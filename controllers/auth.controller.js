@@ -34,6 +34,7 @@ module.exports.signIn = async (req, res) => {
       name: user.pseudo,
       email: user.email,
       picture: user.picture,
+      bio: user.bio,
       following: user.following,
       followers: user.followers,
       likers: user.likers,

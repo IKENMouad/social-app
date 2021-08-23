@@ -31,7 +31,9 @@ const Trends = () => {
               return (
                 <li key={post._id}>
                   <div>
-                    {post.picture && <img src={post.picture} alt="post-pic" />}
+                    {post.picture && (
+                      <img src={`${post.picture}`} alt="post-pic" />
+                    )}
                     {post.video && (
                       <iframe
                         src={post.video}
@@ -42,13 +44,19 @@ const Trends = () => {
                       ></iframe>
                     )}
                     {isEmpty(post.picture) && isEmpty(post.video) && (
-                      <img src={usersData[0] && usersData.map((user) => {
-                        if (user._id === post.posterId) {
-                          return user.picture;
-                        } else return null;
-                      })
-                      .join("")
-                    } alt="profil-pic"/>
+                      <img
+                        src={
+                          usersData[0] &&
+                          usersData
+                            .map((user) => {
+                              if (user._id === post.posterId) {
+                                return user.picture;
+                              } else return null;
+                            })
+                            .join("")
+                        }
+                        alt="profil-pic"
+                      />
                     )}
                   </div>
                   <div className="trend-content">
