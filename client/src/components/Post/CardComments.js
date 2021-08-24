@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, getPosts } from "../../actions/post.actions";
+import { authenticationService } from "../../services/auth.service";
 import FollowHandler from "../Profil/FollowHandler";
 import { isEmpty, timestampParser } from "../Utils";
 import EditDeleteComment from "./EditDeleteComment";
@@ -8,14 +9,18 @@ import EditDeleteComment from "./EditDeleteComment";
 const CardComments = ({ post }) => {
   const [text, setText] = useState("");
   const usersData = useSelector((state) => state.usersReducer);
-  const userData = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
+  const [currentUser, setCurrentUser] = useState('')
+
+  useEffect(() => {
+     setCurrentUser(authenticationService.currentUserValue);
+  }, [])
 
   const handleComment = (e) => {
     e.preventDefault();
 
     if (text) {
-      dispatch(addComment(post._id, userData.id, text, userData.pseudo))
+      dispatch(addComment(post._id, currentUser.id, text, currentUser.pseudo))
         .then(() => dispatch(getPosts()))
         .then(() => setText(''));
     }
@@ -27,7 +32,7 @@ const CardComments = ({ post }) => {
         return (
           <div
             className={
-              comment.commenterId === userData.id
+              comment.commenterId === currentUser.id
                 ? "comment-container client"
                 : "comment-container"
             }
@@ -51,7 +56,7 @@ const CardComments = ({ post }) => {
               <div className="comment-header">
                 <div className="pseudo">
                   <h3>{comment.commenterPseudo}</h3>
-                  {comment.commenterId !== userData.id && (
+                  {comment.commenterId !== currentUser.id && (
                     <FollowHandler
                       idToFollow={comment.commenterId}
                       type={"card"}
@@ -66,7 +71,7 @@ const CardComments = ({ post }) => {
           </div>
         );
       })}
-      {userData.id && (
+      {currentUser.id && (
         <form action="" onSubmit={handleComment} className="comment-form">
           <input
             type="text"
